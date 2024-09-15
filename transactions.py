@@ -1,11 +1,12 @@
 import requests
 from datetime import datetime
-from config import TOKEN, ACCOUNT_ID 
+from config import TOKEN, ACCOUNT_ID
+from zoneinfo import ZoneInfo 
 
 class Transaction:
-    def __init__(self, id, time, description, mcc, originalMcc, amount, operationAmount, currencyCode, commissionRate, cashbackAmount, balance, hold, counterName):
+    def __init__(self, id, time, description, mcc, originalMcc, amount, operationAmount, currencyCode, commissionRate, cashbackAmount, balance, hold, counterName, **kwargs):
         self.id = id
-        self.time = datetime.fromtimestamp(time).strftime('%H:%M:%S')
+        self.time = datetime.fromtimestamp(time + 3600).strftime('%H:%M:%S')
         self.description = description
         self.mcc = mcc
         self.originalMcc = originalMcc
@@ -37,10 +38,10 @@ def get_transactions():
         'X-Token': API_TOKEN
     }
 
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Europe/Kiev"))
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    from_date = int(start_of_day.timestamp())
-    to_date = int(now.timestamp())
+    from_date = int(start_of_day.timestamp()) + 3600
+    to_date = int(now.timestamp()) + 3600
 
     try:
         response = requests.get(MONOBANK_API_URL.format(account_id=account_id, from_date=from_date, to_date=to_date), headers=headers)

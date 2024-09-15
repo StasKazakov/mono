@@ -15,7 +15,7 @@ def start(message):
 
         bot.send_message(message.chat.id, "🚀", reply_markup=markup)
     else:
-        bot.send_message(message.chat.id, "This is private bot")
+        bot.send_message(message.chat.id, "Sorry, it's a private bot. Access denied. 🤷‍♀️")
 
 
 @bot.message_handler(content_types=['text'])
